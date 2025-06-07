@@ -1,0 +1,67 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Medicamento {
+  CodMedicamento     Int                   @id @default(autoincrement())
+  descripcionMed     String
+  fechaFabricacion   DateTime
+  fechaVencimiento   DateTime
+  presentacion       String
+  stock              Int
+  precioVentaUni     Float
+  precioVentaPres    Float
+  marca              String
+
+  detallesOrdenCompra DetalleOrdenCompra[] @relation("DetalleMedicamento")
+
+  @@map("medicamentos")
+}
+
+model DetalleOrdenCompra {
+  id              Int         @id @default(autoincrement())
+  descripcion     String
+  cantidad        Int
+  precio          Float
+  montoUni        Float
+
+  CodMedicamento  Int
+  medicamento     Medicamento @relation("DetalleMedicamento", fields: [CodMedicamento], references: [CodMedicamento], onDelete: Cascade)
+
+  NroOrdenC       Int
+  ordenCompra     OrdenCompra @relation(fields: [NroOrdenC], references: [NroOrdenC], onDelete: Cascade)
+
+  @@map("detalleordencompras")
+}
+
+model OrdenCompra {
+  NroOrdenC       Int                 @id @default(autoincrement())
+  fechaEmision    DateTime
+  situacion       String
+  total           Float
+  nrofacturaProv  String
+  CodLab          Int
+
+  laboratorio     Laboratorio        @relation(fields: [CodLab], references: [CodLab])
+  detalles        DetalleOrdenCompra[]
+
+  @@map("ordencompras")
+}
+
+model Laboratorio {
+  CodLab          Int              @id @default(autoincrement())
+  razonSocial     String
+  direccion       String
+  telefono        String
+  email           String
+  contacto        String
+
+  ordenesCompra   OrdenCompra[]
+
+  @@map("laboratorios")
+}
