@@ -134,7 +134,7 @@ export default function LaboratoriosPage() {
             {modalType === 'delete' && selected && (
               <div className="text-black space-y-4">
                 <h2 className="text-xl font-bold text-red-600">Eliminar Laboratorio</h2>
-                <p>¿Deseas eliminar el laboratorio "{selected.razonSocial}"?</p>
+                <p>¿Deseas eliminar el laboratorio &quot;{selected.razonSocial}&quot;?</p>
                 <div className="flex justify-end gap-4">
                   <button onClick={closeModal} className="px-4 py-2 bg-gray-300 rounded">Cancelar</button>
                   <button onClick={eliminar} className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-800">Eliminar</button>
